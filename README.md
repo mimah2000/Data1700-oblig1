@@ -1,4 +1,4 @@
-# Data1700-oblig1
+# Oblig1
 
 OsloMet brukernvn: mimah2000
 
