@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bestilling av kinobilletter</title>
+    <script src="index.js" defer></script>
+</head>
+<body>
+<h1>Bestilling av kinobilletter</h1>
+    <label for="lstVelgFilm">Velg film:</label>
+    <select id="lstVelgFilm" onchange="velg();">
+        <option value="4568">Velg film her</option>
+        <option value="minions1">Minions 1</option>
+        <option value="minions2">Minions 2</option>
+        <option value="minions3">Minions 3</option>
+    </select> <br>
+
+    <label for="txtAntall">Antall</label>
+    <input type="number" id="txtAntall" min="1" max="10"/> <br>
+    <div id="AntallError"></div>
+
+    <label for="txtFornavn">Fornavn</label>
+    <input type="text" id="txtFornavn"/> <br>
+    <div id="FornavnError"></div>
+
+    <label for="txtEtternavn">Etternavn</label>
+    <input type="text" id="txtEtternavn"/> <br>
+    <div id="EtternavnError"></div>
+
+    <label for="txtTelefonnr">Telefonnr</label>
+    <input type="text" id="txtTelefonnr"/> <br>
+    <div id="TelefonnrError"></div>
+
+    <label for="txtEpost">Epost</label>
+    <input type="text" id="txtEpost"/> <br>
+    <div id="EpostError"></div>
+
+    <button id="btnKjøpBillett" type="button" onclick="kjopBillett()">Kjøp billett</button>
+
+<h2>Alle billetter</h2>
+<div id="ut"></div>
+<button id="btnKnapp2" type="button" onclick="altDelete()">Slett alle billettene</button>
+</body>
+</html>
