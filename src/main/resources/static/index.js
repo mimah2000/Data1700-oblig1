@@ -12,8 +12,8 @@ function kjopBillett() {
 
     /*
     ! er kjent som NOT-operatoren. Når den brukes i en betingelse,
-    vil "!" foran en variabel/uttrykk gjøre uttrykket sant hvis variabelen/ittrykket er falskt og omvendt.
-    Det er en måte å sjekke om en variabel "ikke har en verdig, "er falsk", eller "er tom".
+    vil "!" foran en variabel/uttrykk gjøre uttrykket sant hvis variabelen/uttrykket er falskt og omvendt.
+    Det er en måte å sjekke om en variabel ikke har en verdi, "er falsk", eller "er tom".
     F.eks. "!billett.film" vil sjekke om "billett.film" er tom, "null", "undefined", eller på en annen måte "falsk" (i en boolsk kontekst).
      */
     if (!billett.film || !billett.antall || !billett.fornavn || !billett.etternavn || !billett.telefonnr || !billett.epost) {
