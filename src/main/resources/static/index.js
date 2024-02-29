@@ -10,41 +10,67 @@ function kjopBillett() {
         epost: document.getElementById("txtEpost").value
     };
 
-    /*
-    ! er kjent som NOT-operatoren. Når den brukes i en betingelse,
-    vil "!" foran en variabel/uttrykk gjøre uttrykket sant hvis variabelen/uttrykket er falskt og omvendt.
-    Det er en måte å sjekke om en variabel ikke har en verdi, "er falsk", eller "er tom".
-    F.eks. "!billett.film" vil sjekke om "billett.film" er tom, "null", "undefined", eller på en annen måte "falsk" (i en boolsk kontekst).
-     */
-    if (!billett.film || !billett.antall || !billett.fornavn || !billett.etternavn || !billett.telefonnr || !billett.epost) {
-        if (!billett.antall) document.getElementById("AntallError").innerHTML = "Vennligst fyll inn antall";
-        if (!billett.fornavn) document.getElementById("FornavnError").innerHTML = "Vennligst fyll inn fornavn";
-        if (!billett.etternavn) document.getElementById("EtternavnError").innerHTML = "Vennligst fyll inn etternavn";
-        if (!billett.telefonnr) document.getElementById("TelefonnrError").innerHTML = "Vennligst fyll inn telefonnr";
-        if (!billett.epost) document.getElementById("EpostError").innerHTML = "Vennligst fyll inn epost";
-    } else {
-        billetter.push(billett);
-        let ut = "<table><tr><th>Film</th><th>Antall</th><th>Fornavn</th>" +
-            "<th>Etternavn</th><th>Telefonnr</th><th>Epost</th></tr>";
-        for (let liste of billetter) {
-            ut += "<tr><td>" + liste.film + "</td><td>" + liste.antall + "</td><td>" +
-                liste.fornavn + "</td><td>" + liste.etternavn + "</td><td>" +
-                liste.telefonnr + "</td><td>" + liste.epost + "</td></tr>";
-        }
-        ut += "</table>";
-        document.getElementById("ut").innerHTML = ut;
+    //Regex (regular expression) uttrykk:
+    const telefonnrRegex = /^\d{8}$/;
+    const epostRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        document.getElementById("txtAntall").value = "";
-        document.getElementById("txtFornavn").value = "";
-        document.getElementById("txtEtternavn").value = "";
-        document.getElementById("txtTelefonnr").value = "";
-        document.getElementById("txtEpost").value = "";
-        document.getElementById("AntallError").innerHTML = "";
-        document.getElementById("FornavnError").innerHTML = "";
-        document.getElementById("EtternavnError").innerHTML = "";
-        document.getElementById("TelefonnrError").innerHTML = "";
-        document.getElementById("EpostError").innerHTML = "";
+    let feilmeldinger = [];
+
+    // Sjekk for tomme felter
+    if (!billett.film || !billett.antall || !billett.fornavn || !billett.etternavn || !billett.telefonnr || !billett.epost) {
+        alert("Fyll ut alle feltene.");
+        feilmeldinger.push("tomme felt");
     }
+
+    // Validering med regex
+    if (!telefonnrRegex.test(billett.telefonnr)) {
+        document.getElementById("TelefonnrError").innerHTML = "Ugyldig telefonnummer";
+        feilmeldinger.push("Telefonnr");
+    }
+
+    if (!epostRegex.test(billett.epost)) {
+        document.getElementById("EpostError").innerHTML = "Ugyldig e-postadresse";
+        feilmeldinger.push("Epost");
+    }
+
+    // Sjekk av antall
+    let antall = Number(billett.antall);
+    if (isNaN(antall) || antall <= 0 || antall > 10) {
+        document.getElementById("AntallError").innerHTML = "Antallet må være et tall mellom 1 og 10";
+        feilmeldinger.push("Antall");
+    }
+
+    // Hvis ingen feilmeldinger; legger til billett og oppdaterer listen
+    if (feilmeldinger.length === 0) {
+        billetter.push(billett);
+        oppdaterBillettListe();
+        tomFeltene();
+    }
+}
+
+function oppdaterBillettListe() {
+    let ut = "<table><tr><th>Film</th><th>Antall</th><th>Fornavn</th>" +
+        "<th>Etternavn</th><th>Telefonnr</th><th>Epost</th></tr>";
+    for (let liste of billetter) {
+        ut += "<tr><td>" + liste.film + "</td><td>" + liste.antall + "</td><td>" +
+            liste.fornavn + "</td><td>" + liste.etternavn + "</td><td>" +
+            liste.telefonnr + "</td><td>" + liste.epost + "</td></tr>";
+    }
+    ut += "</table>";
+    document.getElementById("ut").innerHTML = ut;
+}
+
+function tomFeltene() {
+    document.getElementById("lstVelgFilm").value = "4568";
+    document.getElementById("txtAntall").value = "";
+    document.getElementById("txtFornavn").value = "";
+    document.getElementById("txtEtternavn").value = "";
+    document.getElementById("txtTelefonnr").value = "";
+    document.getElementById("txtEpost").value = "";
+    // Rens også feilmeldinger
+    document.getElementById("TelefonnrError").innerHTML = "";
+    document.getElementById("EpostError").innerHTML = "";
+    document.getElementById("AntallError").innerHTML = "";
 }
 
 function altDelete() {
