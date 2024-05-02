@@ -45,13 +45,7 @@ public class BillettController {
     //clears all customer objects from the database using the rep object to access the slettAlleKunder method
 
     @GetMapping("/slettAlle")
-    public ResponseEntity<String> slettAlle() {
-        try {
-            // kode for å slette alle billetter
-            return ResponseEntity.ok("Alle billetter slettet");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Feil ved sletting av data");
-        }
+    public void slettAlle() {
+        rep.slettAlleKunder();
     }
 }

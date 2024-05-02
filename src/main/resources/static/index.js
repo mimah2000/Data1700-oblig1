@@ -1,5 +1,4 @@
-/*
-let billetter = [];
+
 
 function velg() {
     var filmValg = document.getElementById("lstVelgFilm").value;
@@ -15,14 +14,6 @@ function kjopBillett() {
         telefonnr: $("#txtTelefonnr").val(),//document.getElementById("txtTelefonnr").value,
         epost: $("#txtEpost").val(),//document.getElementById("txtEpost").value
     };
-    $.get("/", billett, function (data) {
-        $("#lstVelgFilm").html(data.film);
-        $("#txtAntall").html(data.antall);
-        $("#txtFornavn").html(data.fornavn);
-        $("#txtEtternavn").html(data.etternavn);
-        $("#txtTelefonnr").html(data.telefonnr);
-        $("#txtEpost").html(data.epost);
-    });
 
     //Regex (regular expression) uttrykk:
     const telefonnrRegex = /^\d{8}$/;
@@ -65,28 +56,38 @@ function kjopBillett() {
 
     // Hvis ingen feilmeldinger; legger til billett og oppdaterer listen
     if (feilmeldinger.length === 0) {
-        billetter.push(billett);
-        oppdaterBillettListe();
-        tomFeltene();
-        $("#billetter").html("ut");
+        $.post("/lagreAlle", billett, function () {
+            oppdaterBillettListe();
+            tomFeltene();
+        });
     }
 
 }
 
 function oppdaterBillettListe() {
-    let ut = "<table class='table table-striped'>" +
-        "<tr>" +
-        "<th>Film</th><th>Antall</th><th>Fornavn</th>" +
-        "<th>Etternavn</th><th>Telefonnr</th><th>Epost</th></tr>";
-    for (let liste of billetter) {
-        ut += "<tr><td>" + liste.film + "</td><td>" + liste.antall + "</td><td>" +
-            liste.fornavn + "</td><td>" + liste.etternavn + "</td><td>" +
-            liste.telefonnr + "</td><td>" + liste.epost + "</td></tr>";
-    }
-    ut += "</table>";
-    $("#billetter").html("ut");
-    //document.getElementById("ut").innerHTML = ut;
+    // get fra serveren List<bilett>
+    $.get("/hentAlle", function(data){
+        console.log(data);
+        let billetter = data
+        if (billetter.length === 0){
+            $("#billetter").html("Det er ingen billetter i databasen.")
+            return;
+        }
+        let ut = "<table class='table table-striped'>" +
+            "<tr>" +
+            "<th>Film</th><th>Antall</th><th>Fornavn</th>" +
+            "<th>Etternavn</th><th>Telefonnr</th><th>Epost</th></tr>";
+        for (let liste of billetter) {
+            ut += "<tr><td>" + liste.film + "</td><td>" + liste.antall + "</td><td>" +
+                liste.fornavn + "</td><td>" + liste.etternavn + "</td><td>" +
+                liste.telefonnr + "</td><td>" + liste.epost + "</td></tr>";
+        }
+        ut += "</table>";
+        $("#billetter").html(ut);
+        //document.getElementById("ut").innerHTML = ut;
+    });
 }
+
 
 function tomFeltene() {
     document.getElementById("lstVelgFilm").value = "4568";
@@ -102,13 +103,14 @@ function tomFeltene() {
     $("#tomFeltene").html("");
 }
 
+
+
+/*
 function altDelete() {
     document.getElementById("ut").innerHTML = "";
     billetter = [];
-    $("#billetter").html("ut");
+    $("#billetter").html(ut);
 }
- */
-
 let billetter = [];
 
 function velg() {
@@ -169,6 +171,8 @@ function validerBillett(billett) {
 
     return feilmeldinger;
 }
+
+ */
 
 
 
