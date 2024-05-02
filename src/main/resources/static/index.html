@@ -3,42 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <title>Bestilling av kinobilletter</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="index.js" defer></script>
 </head>
 <body>
-<h1>Bestilling av kinobilletter</h1>
-    <label for="lstVelgFilm">Velg film:</label>
-    <select id="lstVelgFilm" onchange="velg();">
-        <option value="4568">Velg film her</option>
-        <option value="minions1">Minions 1</option>
-        <option value="minions2">Minions 2</option>
-        <option value="minions3">Minions 3</option>
-    </select> <br>
+    <h1>Bestilling av kinobilletter</h1>
+    <table class="table">
+    <tr>
+        <td><div class="container">
+        <!-- <div class="row">
+            <div class="col-md-4">
+                <form class="form"> -->
+            <div class="form-group">
+                <td><label for="lstVelgFilm">Velg film:</label>
+                    <select id="lstVelgFilm" onchange="velg();">
+                        <option value="4568">Velg film her</option>
+                        <option value="minions1">Minions 1</option>
+                        <option value="minions2">Minions 2</option>
+                        <option value="minions3">Minions 3</option>
+                    </select></td>
+            </div>
+        </div>
+    </tr>
 
-    <label for="txtAntall">Antall</label>
-    <input type="number" id="txtAntall" min="1" max="10"/> <br>
-    <div id="AntallError"></div>
 
-    <label for="txtFornavn">Fornavn</label>
-    <input type="text" id="txtFornavn"/> <br>
-    <div id="FornavnError"></div>
+    <tr>
+        <td><div class="col-md-4">
+            <div class="form-group">
+                <td><label for="txtAntall">Antall</label></td>
+                <td><input type="number" id="txtAntall" min="1" max="10"/></td>
+                <td><div id="AntallError"></div></td>
+            </div>
+        </div></td>
+    </tr>
 
-    <label for="txtEtternavn">Etternavn</label>
-    <input type="text" id="txtEtternavn"/> <br>
-    <div id="EtternavnError"></div>
+    <tr>
+        <td><div class="col-md-4">
+                <div class="form-group">
+                    <td><label for="txtFornavn">Fornavn</label></td>
+                    <td></ts><input type="text" id="txtFornavn"/></td>
+                    <td><div id="FornavnError"></div></td>
+                </div>
+            </div></td>
+        </tr>
 
-    <label for="txtTelefonnr">Telefonnr</label>
-    <input type="text" id="txtTelefonnr"/> <br>
-    <div id="TelefonnrError"></div>
+    <tr>
+        <td><div class="col-md-4">
+            <div class="form-group">
+                <td><label for="txtEtternavn">Etternavn</label></td>
+                <td><input type="text" id="txtEtternavn"/></td>
+                <td><div id="EtternavnError"></div></td>
+            </div>
+        </div></td>
+    </tr>
 
-    <label for="txtEpost">Epost</label>
-    <input type="text" id="txtEpost"/> <br>
-    <div id="EpostError"></div>
+    <tr>
+        <td><div class="col-md-4">
+            <div class="form-group">
+                <td><label for="txtTelefonnr">Telefonnr</label></td>
+                <td><input type="text" id="txtTelefonnr"/></td>
+                <td><div id="TelefonnrError"></div></td>
+            </div>
+        </div></td>
+    </tr>
 
-    <button id="btnKjøpBillett" type="button" onclick="kjopBillett()">Kjøp billett</button>
+    <tr>
+        <td><div class="col-md-4">
+            <div class="form-group">
+                <td><label for="txtEpost">Epost</label></td>
+                <td><input type="text" id="txtEpost"/></td>
+                <td><div id="EpostError"></div></td>
+            </div>
+        </div>
+                <!-- </form> -->
+        </div></td>
+    </tr>
+    </table>
 
+<br>
+<button id="btnKjøpBillett" type="button" class="btn btn-primary" onclick="kjopBillett()">Kjøp billett</button></br>
 <h2>Alle billetter</h2>
+<table class="table table-striped" id="billetter"></table>
 <div id="ut"></div>
-<button id="btnKnapp2" type="button" onclick="altDelete()">Slett alle billettene</button>
+<button id="btnKnapp2" type="button" class="btn btn-danger" onclick="altDelete()">Slett alle billettene</button>
+
 </body>
 </html>

@@ -1,14 +1,28 @@
+/*
 let billetter = [];
+
+function velg() {
+    var filmValg = document.getElementById("lstVelgFilm").value;
+    console.log("Valgt film: "+filmValg);
+}
 
 function kjopBillett() {
     const billett = {
-        film: document.getElementById("lstVelgFilm").value,
-        antall: document.getElementById("txtAntall").value,
-        fornavn: document.getElementById("txtFornavn").value,
-        etternavn: document.getElementById("txtEtternavn").value,
-        telefonnr: document.getElementById("txtTelefonnr").value,
-        epost: document.getElementById("txtEpost").value
+        film: $("#lstVelgFilm").val(), //document.getElementById("lstVelgFilm").value,
+        antall: $("#txtAntall").val(),//document.getElementById("txtAntall").value,
+        fornavn: $("#txtFornavn").val(),//document.getElementById("txtFornavn").value,
+        etternavn: $("#txtEtternavn").val(),//document.getElementById("txtEtternavn").value,
+        telefonnr: $("#txtTelefonnr").val(),//document.getElementById("txtTelefonnr").value,
+        epost: $("#txtEpost").val(),//document.getElementById("txtEpost").value
     };
+    $.get("/", billett, function (data) {
+        $("#lstVelgFilm").html(data.film);
+        $("#txtAntall").html(data.antall);
+        $("#txtFornavn").html(data.fornavn);
+        $("#txtEtternavn").html(data.etternavn);
+        $("#txtTelefonnr").html(data.telefonnr);
+        $("#txtEpost").html(data.epost);
+    });
 
     //Regex (regular expression) uttrykk:
     const telefonnrRegex = /^\d{8}$/;
@@ -25,19 +39,28 @@ function kjopBillett() {
     // Validering med regex
     if (!telefonnrRegex.test(billett.telefonnr)) {
         document.getElementById("TelefonnrError").innerHTML = "Ugyldig telefonnummer";
+        document.getElementById("TelefonnrError").className="text-danger";
         feilmeldinger.push("Telefonnr");
+    } else{
+        document.getElementById("TelefonnrError").innerHTML="";
     }
 
     if (!epostRegex.test(billett.epost)) {
         document.getElementById("EpostError").innerHTML = "Ugyldig e-postadresse";
+        document.getElementById("EpostError").className="text-danger";
         feilmeldinger.push("Epost");
+    } else{
+        document.getElementById("EpostError").innerHTML="";
     }
 
     // Sjekk av antall
     let antall = Number(billett.antall);
     if (isNaN(antall) || antall <= 0 || antall > 10) {
         document.getElementById("AntallError").innerHTML = "Antallet må være et tall mellom 1 og 10";
+        document.getElementById("AntallError").className ="text-danger";
         feilmeldinger.push("Antall");
+    } else{
+        document.getElementById("AntallError").innerHTML="";
     }
 
     // Hvis ingen feilmeldinger; legger til billett og oppdaterer listen
@@ -45,11 +68,15 @@ function kjopBillett() {
         billetter.push(billett);
         oppdaterBillettListe();
         tomFeltene();
+        $("#billetter").html("ut");
     }
+
 }
 
 function oppdaterBillettListe() {
-    let ut = "<table><tr><th>Film</th><th>Antall</th><th>Fornavn</th>" +
+    let ut = "<table class='table table-striped'>" +
+        "<tr>" +
+        "<th>Film</th><th>Antall</th><th>Fornavn</th>" +
         "<th>Etternavn</th><th>Telefonnr</th><th>Epost</th></tr>";
     for (let liste of billetter) {
         ut += "<tr><td>" + liste.film + "</td><td>" + liste.antall + "</td><td>" +
@@ -57,7 +84,8 @@ function oppdaterBillettListe() {
             liste.telefonnr + "</td><td>" + liste.epost + "</td></tr>";
     }
     ut += "</table>";
-    document.getElementById("ut").innerHTML = ut;
+    $("#billetter").html("ut");
+    //document.getElementById("ut").innerHTML = ut;
 }
 
 function tomFeltene() {
@@ -71,9 +99,76 @@ function tomFeltene() {
     document.getElementById("TelefonnrError").innerHTML = "";
     document.getElementById("EpostError").innerHTML = "";
     document.getElementById("AntallError").innerHTML = "";
+    $("#tomFeltene").html("");
 }
 
 function altDelete() {
     document.getElementById("ut").innerHTML = "";
     billetter = [];
+    $("#billetter").html("ut");
 }
+ */
+
+let billetter = [];
+
+function velg() {
+    var filmValg = document.getElementById("lstVelgFilm").value;
+    console.log("Valgt film: "+filmValg);
+}
+function kjopBillett() {
+    const billett = {
+        film: $("#lstVelgFilm").val(),
+        antall: $("#txtAntall").val(),
+        fornavn: $("#txtFornavn").val(),
+        etternavn: $("#txtEtternavn").val(),
+        telefonnr: $("#txtTelefonnr").val(),
+        epost: $("#txtEpost").val()
+    };
+
+    let feilmeldinger = validerBillett(billett);
+
+    if (feilmeldinger.length === 0) {
+        $.post("/lagreBillett", billett, function(data) {
+            if (data.success) {
+                billetter.push(billett);
+                oppdaterBillettListe();
+                tomFeltene();
+                alert("Billett kjøpt!");
+            } else {
+                alert("Det oppstod en feil ved lagring av billetten.");
+            }
+        }).fail(function() {
+            alert("Serverfeil: Kunne ikke fullføre forespørselen.");
+        });
+    } else {
+        // Vis feilmeldinger til bruker
+        feilmeldinger.forEach(function(feil) {
+            $("#"+feil+"Error").html("Feil i " + feil);
+        });
+    }
+}
+
+function validerBillett(billett) {
+    let feilmeldinger = [];
+    const telefonnrRegex = /^\d{8}$/;
+    const epostRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!billett.film || !billett.antall || !billett.fornavn || !billett.etternavn || !billett.telefonnr || !billett.epost) {
+        feilmeldinger.push("tomme felt");
+    }
+    if (!telefonnrRegex.test(billett.telefonnr)) {
+        feilmeldinger.push("Telefonnr");
+    }
+    if (!epostRegex.test(billett.epost)) {
+        feilmeldinger.push("Epost");
+    }
+    let antall = Number(billett.antall);
+    if (isNaN(antall) || antall <= 0 || antall > 10) {
+        feilmeldinger.push("Antall");
+    }
+
+    return feilmeldinger;
+}
+
+
+
