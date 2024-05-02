@@ -1,5 +1,3 @@
-
-
 function velg() {
     var filmValg = document.getElementById("lstVelgFilm").value;
     console.log("Valgt film: "+filmValg);
@@ -61,7 +59,6 @@ function kjopBillett() {
             tomFeltene();
         });
     }
-
 }
 
 function oppdaterBillettListe() {
@@ -88,7 +85,6 @@ function oppdaterBillettListe() {
     });
 }
 
-
 function tomFeltene() {
     document.getElementById("lstVelgFilm").value = "4568";
     document.getElementById("txtAntall").value = "";
@@ -103,14 +99,19 @@ function tomFeltene() {
     $("#tomFeltene").html("");
 }
 
-
+function altDelete() {
+    ut = "";
+    $("#billetter").html(ut);
+    $.get("/slettAlle", function(data) {
+        console.log(data);
+        //document.getElementById("ut").innerHTML = "";
+        //billetter = [];
+        $("#billetter").html("Billettene er slettet");
+        return;
+    });
+}
 
 /*
-function altDelete() {
-    document.getElementById("ut").innerHTML = "";
-    billetter = [];
-    $("#billetter").html(ut);
-}
 let billetter = [];
 
 function velg() {
