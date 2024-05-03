@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Repository
@@ -20,10 +22,22 @@ public class BillettRepository {
                 innBillett.getTelefonnr(), innBillett.getEpost());
     }
     public List<Billett> hentAlleKunder() {
+        String sql = "SELECT * FROM Billett";
+        List<Billett> billetter = db.query(sql, new BeanPropertyRowMapper(Billett.class));
+        Comparator<Billett> sortByEtternavn=
+                Comparator.comparing(Billett::getEtternavn);
+        Collections.sort(billetter, sortByEtternavn);
+        return billetter;
+    }
+
+    /*
+    public List<Billett> hentAlleKunder() {
         String sql = "SELECT * FROM Billett ORDER BY etternavn";
         List<Billett> alleKunder = db.query(sql, new BeanPropertyRowMapper(Billett.class));
         return alleKunder;
     }
+
+     */
     public void slettAlleKunder(){
         String sql = "DELETE FROM Billett";
         db.update(sql);

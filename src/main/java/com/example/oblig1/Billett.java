@@ -35,4 +35,5 @@ public class Billett {
 
         public String getEpost() { return epost; }
         public void setEpost(String epost) { this.epost = epost; }
+
 }
